@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabungan Nikah - Syaiful & Fira</title>
+    <style>
+        :root {
+            --primary: #d63384;
+            --primary-dark: #b02a6b;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--bg-color); 
+            margin: 0; 
+            padding: 20px; 
+            color: var(--text-color); 
+        }
+        .container { 
+            max-width: 650px; 
+            margin: auto; 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08); 
+        }
+        h2 { 
+            text-align: center; 
+            color: var(--primary); 
+            margin-bottom: 20px;
+        }
+        .card-summary { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 20px; 
+        }
+        .card { 
+            background: #fff0f5; 
+            padding: 15px; 
+            border-radius: 12px; 
+            flex: 1; 
+            text-align: center; 
+            border: 1px solid #ffb6c1; 
+        }
+        .card h4 {
+            margin: 0 0 8px 0;
+            color: var(--primary-dark);
+        }
+        .card p {
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .total-box { 
+            background: linear-gradient(135deg, #ffe4e1, #fff0f5); 
+            padding: 18px; 
+            border-radius: 12px; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            font-weight: bold; 
+            font-size: 1.3em; 
+            color: #c71585; 
+            border: 1px solid #ffc0cb;
+        }
+        form { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 25px; 
+            background: #fdfdfd;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+        form select, form input { 
+            padding: 10px 12px; 
+            border-radius: 8px; 
+            border: 1px solid #ccc; 
+            font-size: 0.95em; 
+            outline: none;
+        }
+        form select:focus, form input:focus {
+            border-color: var(--primary);
+        }
+        .full-width {
+            grid-column: span 2;
+        }
+        button { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 1em; 
+            transition: background 0.2s;
+        }
+        button:hover { 
+            background: var(--primary-dark); 
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 10px; 
+        }
+        th, td { 
+            border: 1px solid #e0e0e0; 
+            padding: 10px 12px; 
+            text-align: left; 
+            font-size: 0.9em; 
+        }
+        th { 
+            background: #f1f3f5; 
+            color: #495057;
+        }
+        .text-in { color: #2b8a3e; font-weight: 600; }
+        .text-out { color: #c92a2a; font-weight: 600; }
+        .btn-delete {
+            background: #ff6b6b;
+            padding: 4px 8px;
+            font-size: 0.8em;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn-delete:hover {
+            background: #fa5252;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>💍 Tabungan Nikah Syaiful & Fira 💍</h2>
+    
+    <div class="total-box">
+        Total Tabungan Bersama: <span id="totalBersama">Rp 0</span>
+    </div>
+
+    <div class="card-summary">
+        <div class="card">
+            <h4>Tabungan Syaiful</h4>
+            <p id="totalSyaiful">Rp 0</p>
+        </div>
+        <div class="card">
+            <h4>Tabungan Fira</h4>
+            <p id="totalFira">Rp 0</p>
+        </div>
+    </div>
+
+    <form id="transaksiForm">
+        <select id="nama" required>
+            <option value="">Pilih Nama</option>
+            <option value="Syaiful">Syaiful</option>
+            <option value="Fira">Fira</option>
+        </select>
+        <select id="jenis" required>
+            <option value="Pemasukan">Pemasukan (Setor)</option>
+            <option value="Pengeluaran">Pengeluaran (Tarik)</option>
+        </select>
+        <input type="number" id="jumlah" class="full-width" placeholder="Jumlah (Rp) - Contoh: 1000000" required>
+        <input type="text" id="keterangan" class="full-width" placeholder="Keterangan (Contoh: Setoran Bulan Oktober)" required>
+        <button type="submit" class="full-width">Tambah Catatan</button>
+    </form>
+
+    <h3>Riwayat Transaksi</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Jenis</th>
+                    <th>Jumlah</th>
+                    <th>Keterangan</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="riwayatList">
+                <!-- Data akan masuk otomatis -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let dataTransaksi = JSON.parse(localStorage.getItem('tabungan_nikah_syaifulfira')) || [];
+
+    const form = document.getElementById('transaksiForm');
+    const riwayatList = document.getElementById('riwayatList');
+    const totalSyaifulEl = document.getElementById('totalSyaiful');
+    const totalFiraEl = document.getElementById('totalFira');
+    const totalBersamaEl = document.getElementById('totalBersama');
+
+    function updateApp() {
+        riwayatList.innerHTML = '';
+        let tSyaiful = 0;
+        let tFira = 0;
+
+        if (dataTransaksi.length === 0) {
+            riwayatList.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #888;">Belum ada catatan transaksi.</td></tr>`;
+        }
+
+        dataTransaksi.forEach((item, index) => {
+            let jumlahAngka = parseInt(item.jumlah);
+            if(item.nama === 'Syaiful') {
+                if(item.jenis === 'Pemasukan') tSyaiful += jumlahAngka; else tSyaiful -= jumlahAngka;
+            } else {
+                if(item.jenis === 'Pemasukan') tFira += jumlahAngka; else tFira -= jumlahAngka;
+            }
+
+            let row = `<tr>
+                <td><strong>${item.nama}</strong></td>
+                <td><span class="${item.jenis === 'Pemasukan' ? 'text-in' : 'text-out'}">${item.jenis}</span></td>
+                <td>Rp ${jumlahAngka.toLocaleString('id-ID')}</td>
+                <td>${item.keterangan}</td>
+                <td><button class="btn-delete" onclick="hapusData(${index})">Hapus</button></td>
+            </tr>`;
+            riwayatList.innerHTML += row;
+        });
+
+        totalSyaifulEl.innerText = `Rp ${tSyaiful.toLocaleString('id-ID')}`;
+        totalFiraEl.innerText = `Rp ${tFira.toLocaleString('id-ID')}`;
+        totalBersamaEl.innerText = `Rp ${(tSyaiful + tFira).toLocaleString('id-ID')}`;
+
+        localStorage.setItem('tabungan_nikah_syaifulfira', JSON.stringify(dataTransaksi));
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const transaksi = {
+            nama: document.getElementById('nama').value,
+            jenis: document.getElementById('jenis').value,
+            jumlah: document.getElementById('jumlah').value,
+            keterangan: document.getElementById('keterangan').value
+        };
+        dataTransaksi.push(transaksi);
+        form.reset();
+        updateApp();
+    });
+
+    function hapusData(index) {
+        if(confirm('Yakin ingin menghapus catatan ini?')) {
+            dataTransaksi.splice(index, 1);
+            updateApp();
+        }
+    }
+
+    updateApp();
+</script>
+
+</body>
+</html>
